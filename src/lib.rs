@@ -15,7 +15,7 @@ fn unexpected_ident<T>(ident: &Ident) -> Result<T> {
 
 fn expect_ident(input: ParseStream, name: &str) -> Result<Ident> {
     let ident: Ident = input.parse()?;
-    if ident.to_string() == name {
+    if ident == name {
         Ok(ident)
     } else {
         unexpected_ident(&ident)
@@ -49,7 +49,7 @@ fn セバスチャン_parse(input: ParseStream) -> Result<TokenStream> {
                         args.push(arg);
                         break;
                     }
-                    _ => return unexpected_ident(&ident),
+                    _ => return unexpected_ident(&ident)
                 }
             }
             input.parse::<Token![,]>()?;
@@ -63,7 +63,7 @@ fn セバスチャン_parse(input: ParseStream) -> Result<TokenStream> {
                 fn #name (#args) -> #output #block
             })
         }
-        _ => return unexpected_ident(&ident),
+        _ => unexpected_ident(&ident)
     }
 }
 
@@ -130,5 +130,10 @@ mod tests {
                 }
             }.to_string()
         };
+    }
+
+    #[test]
+    fn test_forth() {
+        println!("{:?}", quote![ [a,b,c] ])
     }
 }
